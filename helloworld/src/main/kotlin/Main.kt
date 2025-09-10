@@ -1,8 +1,5 @@
 package org.example
 
-import org.example.seed
-import org.example.main
-
 fun seed(): String = "Nikita_Poddubnyi"
 
 fun labNumber(): Int = 1
