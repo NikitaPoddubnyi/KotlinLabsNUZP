@@ -1,9 +1,9 @@
 package org.example
+import org.example.main
 
 //fun seed(): Double = "Nikita_Piddubniy"
 
 fun seed(a: Double = 0.0, b: Double = 0.0): Double {
-    // просто повертаємо суму (приклад)
     return a + b
 }
 
