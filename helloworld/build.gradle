@@ -1,5 +1,6 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.20'
+    id 'application'
 }
 
 group = 'org.example'
@@ -9,13 +10,18 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
-}
-
-test {
-    useJUnitPlatform()
-}
 kotlin {
     jvmToolchain(17)
+}
+
+dependencies {
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass.set("org.example.MainKt")
 }

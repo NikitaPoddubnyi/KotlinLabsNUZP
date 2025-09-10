@@ -1,8 +1,6 @@
 package org.example
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun seed(): String = "Piddubnyi_Nikita"
+fun seed(): String = "Nikita_Poddubnyi"
 
 fun labNumber(): Int = 1
 
@@ -21,6 +19,6 @@ fun main(args: Array<String>) {
     var secCat = "Мурзик"
     secCat += " \uD83D\uDC06"
     age = 6
-    var newWeight = 8.2f
-    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $age років! ")
+    val newWeight = 8.2f
+    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $age років!")
 }
