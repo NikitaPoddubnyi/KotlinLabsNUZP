@@ -1,6 +1,6 @@
 package org.example
 
-fun seed(): Double = 28
+fun seed(): Double = 28.0
 
 fun labNumber(): Int = 1
 
