@@ -2,7 +2,7 @@ package org.example
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun seed(): String = "Nikita_Poddubnyi"
+fun seed(): Double = 12345.0
 
 fun labNumber(): Int = 1
 
