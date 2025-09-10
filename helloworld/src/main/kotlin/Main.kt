@@ -22,5 +22,5 @@ fun main() {
     secCat += " \uD83D\uDC06"
     age = 6
     var newWeight = 8.2f
-    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $age років!")
+    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $age років! ")
 }
