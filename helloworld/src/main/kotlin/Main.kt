@@ -1,12 +1,11 @@
 package org.example
 
-fun seed(): String = "Nikita_Poddubnyi"
+fun seed(): Double = 28
 
 fun labNumber(): Int = 1
 
 fun main(args: Array<String>) {
-    var seed = "Nikita_Piddubnyi"
-    println("Лабораторна робота №${labNumber()} користувача ${seed}")
+    println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
     var kitty = "Васько"
     kitty += " \uD83D\uDC31"
