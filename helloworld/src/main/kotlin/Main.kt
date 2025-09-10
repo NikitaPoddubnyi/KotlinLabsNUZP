@@ -1,11 +1,7 @@
 package org.example
-import org.example.main
 
-//fun seed(): Double = "Nikita_Piddubniy"
 
-fun seed(a: Double = 0.0, b: Double = 0.0): Double {
-    return a + b
-}
+fun seed(): Double = "Nikita_Piddubniy"
 
 fun labNumber(): Int = 1
 

@@ -10,10 +10,6 @@ repositories {
     mavenCentral()
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test"
 }
