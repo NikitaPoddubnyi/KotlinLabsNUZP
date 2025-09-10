@@ -25,8 +25,8 @@ tasks.test {
 application {
     mainClass.set("org.example.MainKt")
 }
-java {
-    toolchain {
+kotlin {
+    jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
