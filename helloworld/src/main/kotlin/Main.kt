@@ -6,7 +6,7 @@ fun seed(): String = "Nikita_Poddubnyi"
 
 fun labNumber(): Int = 1
 
-fun main() {
+fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
     var kitty = "Васько"
