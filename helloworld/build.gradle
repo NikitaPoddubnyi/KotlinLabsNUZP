@@ -1,6 +1,5 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.8.0'
-    id 'application'
 }
 
 group = 'org.example'
@@ -11,18 +10,12 @@ repositories {
 }
 
 dependencies {
-    testImplementation "org.jetbrains.kotlin:kotlin-test"
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
 
-tasks.test {
+test {
     useJUnitPlatform()
 }
-
-application {
-    mainClass.set("org.example.MainKt")
-}
 kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
+    jvmToolchain(17)
 }
