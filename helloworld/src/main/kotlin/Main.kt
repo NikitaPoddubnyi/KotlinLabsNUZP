@@ -17,9 +17,9 @@ fun main(args: Array<String>) {
     val weight: Float = 3.5f
     println("Кошеня №2 - $catName з вагою $weight кг")
 
-    var secCat = "Мурзик"
+    var secCat = "Рудий"
     secCat += " \uD83D\uDC06"
-    age = 6
+    var newAge = 6
     val newWeight = 8.2f
-    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $age років!")
+    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $newAge років!")
 }
