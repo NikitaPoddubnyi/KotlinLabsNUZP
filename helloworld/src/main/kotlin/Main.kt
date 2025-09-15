@@ -1,7 +1,7 @@
 package org.example
 
 
-fun seed(): String = "Nikita_Piddubniy"
+fun seed(): Double = 12345.0
 
 fun labNumber(): Int = 1
 
