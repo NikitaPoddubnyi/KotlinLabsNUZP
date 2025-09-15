@@ -21,5 +21,5 @@ fun main(args: Array<String>) {
     secCat += " \uD83D\uDC06"
     var newAge = 6
     val newWeight = 8.2f
-    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $newAge років!")
+    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $newAge років")
 }
