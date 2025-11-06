@@ -1,81 +1,89 @@
-
+import com.diacht.ktest.*
 import org.example.helloworld.BuildConfig
 import com.diacht.ktest.compose.startTestUi
-import kotlin.math.tan
-import kotlin.math.sin
+import com.diacht.ktest.caffe.CafeFactory
+import com.diacht.ktest.caffe.*
 
 fun seed(): String = "NikitaPoddubnyi"
 
 fun labNumber(): Int = BuildConfig.LAB_NUMBER
 
-/**
- * iCalculate()
- * Обчислює значення tan(x0 + x1 + x2 + x3).
- * Вхідні параметри – цілі числа з дефолтними значеннями:
- * x0 = 10, x1 = -52, x2 = -99, x3 = -111.
- */
-fun iCalculate(
-    x0: Int = 10,
-    x1: Int = -52,
-    x2: Int = -99,
-    x3: Int = -111
-): Double {
-    return tan((x0 + x1 + x2 + x3).toDouble())
+fun getSimulationObject(): FactoryItf {
+    return CafeFactory()
 }
 
-/**
- * dCalculate()
- * Обчислює значення sin(x0 * x1 * x2 * x3).
- * Вхідні параметри – числа з плаваючою крапкою (Double),
- * значення за замовчуванням:
- * x0 = 7.84, x1 = 51.66, x2 = -21.84, x3 = -10.78.
- */
-fun dCalculate(
-    x0: Double = 7.84,
-    x1: Double = 51.66,
-    x2: Double = -21.84,
-    x3: Double = -10.78
-): Double {
-    return sin(x0 * x1 * x2 * x3)
-}
+// 🔹 Демонстрація роботи кав'ярні
+fun demonstrateCoffee() {
+    println("\n=== ☕ ДЕМОНСТРАЦІЯ КАВ'ЯРНІ ===")
 
-/**
- * strCalculate()
- * Порівнює два рядки однакової парної довжини,
- * що складаються з символів A, T, G, C, J.
- * - Перевіряються тільки символи 'T' та 'C' з першого рядка.
- * - Якщо відповідні символи у другому рядку не співпадають:
- *   • якщо позиція у першій половині рядка → +2 до результату
- *   • якщо у другій половині → +1 до результату
- * Повертає кількість неспівпадінь.
- */
-fun strCalculate(x0: String, x1: String): Int {
-    require(x0.length == x1.length && x0.length % 2 == 0) {
-        "Рядки повинні бути однакової парної довжини"
+    val factory = CafeFactory()
+
+    // Завантажуємо продукти
+    val initialProducts = listOf(
+        Product(MILK, 1000),
+        Product(COFFEE, 500),
+        Product(SUGAR, 1000),
+        Product(WATER, 5000),
+        Product(CACAO_POWDER, 200)
+    )
+    factory.loadProducts(initialProducts)
+
+    println("📦 Початкові продукти завантажено:")
+    println("- Молоко: 1000 мл")
+    println("- Кава: 500 г")
+    println("- Цукор: 1000 г")
+    println("- Вода: 5000 мл")
+    println("- Какао-порошок: 200 г")
+
+    val order = listOf(
+        ESPRESSO to 3,
+        CAPPUCCINO to 2,
+        LATE to 4,
+        AMERICANO to 1,
+        AMERICANO_WI_MILK to 2,
+        CACAO_DRINK to 1
+    )
+
+    println("\n🧾 Замовлення:")
+    order.forEach { (type, count) ->
+        println("- $type: $count шт.")
     }
 
-    var result = 0
-    val half = x0.length / 2
+    val result = factory.order(order)
 
-    for (i in x0.indices) {
-        val c0 = x0[i]
-        val c1 = x1[i]
-
-        if (c0 == 'T' || c0 == 'C') {
-            if (c0 != c1) {
-                result += if (i < half) 2 else 1
-            }
-        }
+    println("\n✅ Приготовано напої:")
+    result.groupBy { it.type }.forEach { (type, list) ->
+        println("- $type: ${list.size} шт.")
     }
-    return result
+
+
+    println("\n📊 Статистика:")
+    println("- Загальний дохід: ${factory.getEarnings()} грн")
+
+    val popular = factory.getPopularDrink()
+    println("- Найпопулярніший напій: ${popular.type} (${popular.count} замовлень)")
+
+    val unpopular = factory.getUnpopularDrink()
+    println("- Найменш популярний напій: ${unpopular.type} (${unpopular.count} замовлень)")
+
+    val mostEarnings = factory.getMostEarnings()
+    println("- Найприбутковіший напій: ${mostEarnings.first} (${mostEarnings.second} грн)")
+
+    println("\n📦 Залишки на складі:")
+    factory.getLeftovers().forEach {
+        println("- ${it.type}: ${it.count}")
+    }
+
+    println("\n📈 Детальна статистика замовлень:")
+    factory.getOrderStatistics().forEach {
+        println("- ${it.type}: ${it.count} замовлень")
+    }
 }
 
 fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
-    println("iCalculate(): ${iCalculate()}")
-    println("dCalculate(): ${dCalculate()}")
-    println("strCalculate(\"TACGTC\", \"TAGGCC\"): ${strCalculate("TACGTC", "TAGGCC")}")
+
+    demonstrateCoffee()
 
     startTestUi(seed(), labNumber())
-
 }
