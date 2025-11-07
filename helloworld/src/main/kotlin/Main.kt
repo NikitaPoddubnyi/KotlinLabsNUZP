@@ -1,60 +1,87 @@
 import com.diacht.ktest.*
 import org.example.helloworld.BuildConfig
 import com.diacht.ktest.compose.startTestUi
-import kotlinx.coroutines.*
-import kotlin.math.sqrt
+import com.diacht.ktest.caffe.CafeFactory
+import com.diacht.ktest.caffe.*
 
 fun seed(): String = "NikitaPoddubnyi"
 
 fun labNumber(): Int = BuildConfig.LAB_NUMBER
 
-suspend fun sendToServer(str: String): Int {
-    delay(10000)
-    println("📤 Відправлено на сервер: '$str'")
-    val result = str.toIntOrNull() ?: str.length
-    println("📥 Отримано з сервера: $result")
-    return result
+fun getSimulationObject(): FactoryItf {
+    return CafeFactory()
 }
 
-suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
-    println("\n🔄 Початок асинхронного завантаження даних...")
-    val startTime = System.currentTimeMillis()
+fun demonstrateCoffee() {
+    println("\n=== ☕ ДЕМОНСТРАЦІЯ КАВ'ЯРНІ ===")
 
-    val deferredResults = strList.map { str ->
-        async { sendToServer(str) }
+    val factory = CafeFactory()
+
+    val initialProducts = listOf(
+        Product(MILK, 1000),
+        Product(COFFEE, 500),
+        Product(SUGAR, 1000),
+        Product(WATER, 5000),
+        Product(CACAO_POWDER, 200)
+    )
+    factory.loadProducts(initialProducts)
+
+    println("📦 Початкові продукти завантажено:")
+    println("- Молоко: 1000 мл")
+    println("- Кава: 500 г")
+    println("- Цукор: 1000 г")
+    println("- Вода: 5000 мл")
+    println("- Какао-порошок: 200 г")
+
+    val order = listOf(
+        ESPRESSO to 3,
+        CAPPUCCINO to 2,
+        LATE to 4,
+        AMERICANO to 1,
+        AMERICANO_WI_MILK to 2,
+        CACAO_DRINK to 1
+    )
+
+    println("\n🧾 Замовлення:")
+    order.forEach { (type, count) ->
+        println("- $type: $count шт.")
     }
 
-    val results = deferredResults.awaitAll()
+    val result = factory.order(order)
 
-    // Розрахунок √(x0² + x1² + ... + xn²)
-    val sumSquares = results.sumOf { it * it }
-    val finalResult = sqrt(sumSquares.toDouble())
+    println("\n✅ Приготовано напої:")
+    result.groupBy { it.type }.forEach { (type, list) ->
+        println("- $type: ${list.size} шт.")
+    }
 
-    val endTime = System.currentTimeMillis()
-    val totalTime = (endTime - startTime) / 1000.0
 
-    println("✅ Всі дані завантажено за ${totalTime} секунд")
-    println("📊 Результат обчислень: $finalResult")
+    println("\n📊 Статистика:")
+    println("- Загальний дохід: ${factory.getEarnings()} грн")
 
-    finalResult
+    val popular = factory.getPopularDrink()
+    println("- Найпопулярніший напій: ${popular.type} (${popular.count} замовлень)")
+
+    val unpopular = factory.getUnpopularDrink()
+    println("- Найменш популярний напій: ${unpopular.type} (${unpopular.count} замовлень)")
+
+    val mostEarnings = factory.getMostEarnings()
+    println("- Найприбутковіший напій: ${mostEarnings.first} (${mostEarnings.second} грн)")
+
+    println("\n📦 Залишки на складі:")
+    factory.getLeftovers().forEach {
+        println("- ${it.type}: ${it.count}")
+    }
+
+    println("\n📈 Детальна статистика замовлень:")
+    factory.getOrderStatistics().forEach {
+        println("- ${it.type}: ${it.count} замовлень")
+    }
 }
 
-fun demonstrateCoroutines() = runBlocking {
-    println("\n=== 🔄 ДЕМОНСТРАЦІЯ КОРУТИН ===")
-
-    val testData = listOf("10", "hello", "42", "test", "5")
-    println("📋 Тестові дані: $testData")
-    println("⏰ Кожен запит до сервера займає 10 секунд...")
-    println("🚀 Запускаємо асинхронне завантаження...")
-
-    val result = serverDataCalculate(testData)
-    println("\n🎯 Фінальний результат: $result")
-}
-
-fun main(args: Array<String>) = runBlocking {
+fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
-    demonstrateCoroutines()
+    demonstrateCoffee()
 
     startTestUi(seed(), labNumber())
 }
