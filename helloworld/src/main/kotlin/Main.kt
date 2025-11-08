@@ -1,9 +1,9 @@
-
 package org.example
+import com.diacht.ktest.*
+import org.example.helloworld.BuildConfig
+import com.diacht.ktest.compose.startTestUi
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun seed(): String = "Nikita_Poddubnyi"
+fun seed(): String = "NikitaPoddubnyi"
 
 fun labNumber(): Int = 1
 
@@ -16,12 +16,12 @@ fun main() {
     println("Кошеня №1 - $kitty віком $age років")
 
     val catName: String = "Мурзик \uD83D\uDC08"
-    val weight: Float = 3.5f
-    println("Кошеня №2 - $catName з вагою $weight кг")
+    val weight1: Float = 3.5f
+    println("Кошеня №2 - $catName з вагою $weight1 кг")
 
     var secCat = "Рудий"
     secCat += " \uD83D\uDC06"
     age = 6
-    var newWeight = 8.2f
-    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $age років!")
+    val weight2: Float = 8.2f
+    println("Кошеня №3 - $secCat з вагою $weight2 кг та віком $age років!")
 }
