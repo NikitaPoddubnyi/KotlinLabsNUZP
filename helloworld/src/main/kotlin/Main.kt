@@ -1,27 +1,87 @@
-package org.example
 import com.diacht.ktest.*
 import org.example.helloworld.BuildConfig
 import com.diacht.ktest.compose.startTestUi
+import com.diacht.ktest.caffe.CafeFactory
+import com.diacht.ktest.caffe.*
 
 fun seed(): String = "NikitaPoddubnyi"
 
-fun labNumber(): Int = 1
+fun labNumber(): Int = BuildConfig.LAB_NUMBER
 
-fun main() {
+fun getSimulationObject(): FactoryItf {
+    return CafeFactory()
+}
+
+fun demonstrateCoffee() {
+    println("\n=== ☕ ДЕМОНСТРАЦІЯ КАВ'ЯРНІ ===")
+
+    val factory = CafeFactory()
+
+    val initialProducts = listOf(
+        Product(MILK, 1000),
+        Product(COFFEE, 500),
+        Product(SUGAR, 1000),
+        Product(WATER, 5000),
+        Product(CACAO_POWDER, 200)
+    )
+    factory.loadProducts(initialProducts)
+
+    println("📦 Початкові продукти завантажено:")
+    println("- Молоко: 1000 мл")
+    println("- Кава: 500 г")
+    println("- Цукор: 1000 г")
+    println("- Вода: 5000 мл")
+    println("- Какао-порошок: 200 г")
+
+    val order = listOf(
+        ESPRESSO to 3,
+        CAPPUCCINO to 2,
+        LATE to 4,
+        AMERICANO to 1,
+        AMERICANO_WI_MILK to 2,
+        CACAO_DRINK to 1
+    )
+
+    println("\n🧾 Замовлення:")
+    order.forEach { (type, count) ->
+        println("- $type: $count шт.")
+    }
+
+    val result = factory.order(order)
+
+    println("\n✅ Приготовано напої:")
+    result.groupBy { it.type }.forEach { (type, list) ->
+        println("- $type: ${list.size} шт.")
+    }
+
+
+    println("\n📊 Статистика:")
+    println("- Загальний дохід: ${factory.getEarnings()} грн")
+
+    val popular = factory.getPopularDrink()
+    println("- Найпопулярніший напій: ${popular.type} (${popular.count} замовлень)")
+
+    val unpopular = factory.getUnpopularDrink()
+    println("- Найменш популярний напій: ${unpopular.type} (${unpopular.count} замовлень)")
+
+    val mostEarnings = factory.getMostEarnings()
+    println("- Найприбутковіший напій: ${mostEarnings.first} (${mostEarnings.second} грн)")
+
+    println("\n📦 Залишки на складі:")
+    factory.getLeftovers().forEach {
+        println("- ${it.type}: ${it.count}")
+    }
+
+    println("\n📈 Детальна статистика замовлень:")
+    factory.getOrderStatistics().forEach {
+        println("- ${it.type}: ${it.count} замовлень")
+    }
+}
+
+fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
-    var kitty = "Васько"
-    kitty += " \uD83D\uDC31"
-    var age = 7
-    println("Кошеня №1 - $kitty віком $age років")
+    demonstrateCoffee()
 
-    val catName: String = "Мурзик \uD83D\uDC08"
-    val weight1: Float = 3.5f
-    println("Кошеня №2 - $catName з вагою $weight1 кг")
-
-    var secCat = "Рудий"
-    secCat += " \uD83D\uDC06"
-    age = 6
-    val weight2: Float = 8.2f
-    println("Кошеня №3 - $secCat з вагою $weight2 кг та віком $age років!")
+    startTestUi(seed(), labNumber())
 }
