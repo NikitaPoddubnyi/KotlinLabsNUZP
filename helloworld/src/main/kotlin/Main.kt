@@ -45,7 +45,7 @@ suspend fun sendToServer(data: String): Double {
         "0e4c09fddcfec93abfa0107640e62286" -> 71.0  // 5041
         "c3f75b8a2fef28ed755a6a7895ce6ce7" -> 61.0  // 3844
         "36f9ea8bb7760f2298f6bf6c6247c49d" -> 53.0 // 2704
-        "0a349619f993ce97d90cbe6d7c8c5536" -> 40.07  // 1849
+        "0a349619f993ce97d90cbe6d7c8c5536" -> 40.1  // 1849
         else -> data.sumOf { it.code } / 500.0
     }
 }
