@@ -21,6 +21,7 @@ suspend fun getNumberFromServer(message: String): Int {
     }
 }
 
+
 suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
     val firstSix = strList.take(6)
 
