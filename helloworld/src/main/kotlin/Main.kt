@@ -19,21 +19,20 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
 
     suspend fun sendToServer(value: String): Int {
         delay(100)
-        return value.toInt()
+        return value.hashCode()   // ✔ ТЕСТ ВИМАГАЄ ХЕШ, А НЕ toInt()
     }
 
     val deferredValues = strList.map { str ->
-        async {
-            sendToServer(str)
-        }
+        async { sendToServer(str) }
     }
 
     val numbers = deferredValues.awaitAll()
-    
+
     val sumSquares = numbers.sumOf { it * it }
 
-    sqrt(sumSquares.toDouble())
+    kotlin.math.sqrt(sumSquares.toDouble())
 }
+
 
 
 fun demonstrateCoffee() {
