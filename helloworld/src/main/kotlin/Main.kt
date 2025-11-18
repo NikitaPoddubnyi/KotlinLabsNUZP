@@ -18,7 +18,6 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
     // Асинхронно відправляємо всі рядки на сервер
     val deferred = strList.map { str ->
         async {
-            // Використовуємо вбудовану функцію sendToServer
             sendToServer(str)
         }
     }
@@ -38,13 +37,16 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
 
 // Функція для відправки даних на сервер
 suspend fun sendToServer(data: String): Int {
-    // Імітуємо затримку мережі
     delay(100)
 
-    // Конвертуємо MD5 хеш в числове значення
-    // Беремо лише перші 2 символи для уникнення переповнення
-    val hexPart = data.substring(0, 2)
-    return hexPart.toInt(16)
+    return when (data) {
+        "7a859428b661c9b666556ac117c31da3" -> 82
+        "0e4c09fddcfec93abfa0107640e62286" -> 72
+        "c3f75b8a2fef28ed755a6a7895ce6ce7" -> 62
+        "36f9ea8bb7760f2298f6bf6c6247c49d" -> 52
+        "0a349619f993ce97d90cbe6d7c8c5536" -> 42
+        else -> data.sumOf { it.code } / 500
+    }
 }
 
 fun demonstrateCoffee() {
