@@ -46,7 +46,7 @@ val serverValues = mapOf(
     "c55717153e8ef7ae0cbe8fcac002b280" to 150.0,
     "eee663ac8fc91280636e18d2a0448211" to 120.0,
     "9c7cec9d021471252dbdaa6f3226645f" to 90.0,
-    "a63c42676ac37df20ec094984e5625c8" to 95.11,
+    "a63c42676ac37df20ec094984e5625c8" to 95.106,
     "aeb5914f8bbd2a1bd03e0da019714cd2" to 100.0
 )
 // Функція для відправки даних на сервер
