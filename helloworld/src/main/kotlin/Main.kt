@@ -42,8 +42,8 @@ suspend fun sendToServer(data: String): Int {
     delay(100)
 
     // Конвертуємо MD5 хеш в числове значення
-    // Беремо перші 8 символів та конвертуємо з hex в Int
-    val hexPart = data.substring(0, 8)
+    // Беремо лише перші 2 символи для уникнення переповнення
+    val hexPart = data.substring(0, 2)
     return hexPart.toInt(16)
 }
 
