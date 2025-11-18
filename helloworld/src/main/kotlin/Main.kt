@@ -19,7 +19,7 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
 
     suspend fun sendToServer(value: String): Int {
         delay(100)
-        return value.chunked(2).sumOf { it.toInt(16) }
+        return value.sumOf { it.code }
     }
 
     val deferred = strList.map { async { sendToServer(it) } }
