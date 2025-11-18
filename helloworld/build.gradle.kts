@@ -28,6 +28,16 @@ kotlin {
     jvmToolchain(Versions.jvmLevel)
 }
 
+// ADD THESE LINES TO FIX JVM TARGET COMPATIBILITY
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = Versions.jvmLevel.toString()
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    targetCompatibility = Versions.jvmLevel.toString()
+    sourceCompatibility = Versions.jvmLevel.toString()
+}
+
 application {
     mainClass.set("MainKt")
 }
