@@ -51,7 +51,7 @@ val serverValues = mapOf(
     "aeb5914f8bbd2a1bd03e0da019714cd2" to 100.0,
 
     "1b59ce6d9e580a2b625eb9a3330ad79a" to 150.0,
-    "44c7dd4da90803138a37a3f8cac5dbe1" to 119.99,
+    "44c7dd4da90803138a37a3f8cac5dbe1" to 119.97,
     "22c1bc5c081d9a5d821a6a60bb4ee8ad" to 99.0,
     "56ee9cbb04a11fa3a6472a6f579ad75d" to 116.0,
     "4661757d5702c4aacee7dee6f27725ac" to 140.0
