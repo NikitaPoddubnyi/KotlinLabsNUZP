@@ -35,8 +35,6 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
     tanh(maxValue.toDouble())
 }
 
-
-
 fun main() = runBlocking {
     val data = listOf("x0", "x1", "x2", "x3", "x4", "x5")
     val result = serverDataCalculate(data)
