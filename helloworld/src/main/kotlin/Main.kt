@@ -11,6 +11,7 @@ fun main(args: Array<String>) {
     val age = 7
     println("Кошеня №1 - $kitty віком $age років")
 
+    
     val catName: String = "Мурзик \uD83D\uDC08"
     val weight: Float = 3.5f
     println("Кошеня №2 - $catName з вагою $weight кг")
@@ -20,3 +21,4 @@ fun main(args: Array<String>) {
     val age2 = 6
     println("Кошеня №3 - $catName2 віком $age2 та вагою $weight2 кг")
 }
+
