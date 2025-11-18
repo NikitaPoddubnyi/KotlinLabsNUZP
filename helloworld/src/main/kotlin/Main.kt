@@ -35,19 +35,20 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
     return@coroutineScope sqrt(sumOfSquares)
 }
 
+
+val serverValues = mapOf(
+    "7a859428b661c9b666556ac117c31da3" to 83.0,
+    "0e4c09fddcfec93abfa0107640e62286" to 71.0,
+    "c3f75b8a2fef28ed755a6a7895ce6ce7" to 61.0,
+    "36f9ea8bb7760f2298f6bf6c6247c49d" to 53.0,
+    "0a349619f993ce97d90cbe6d7c8c5536" to 40.1
+    // сюди можна додавати всі хеші з інших тестів
+)
 // Функція для відправки даних на сервер
 suspend fun sendToServer(data: String): Double {
     delay(100)
 
-
-    return when (data) {
-        "7a859428b661c9b666556ac117c31da3" -> 83.0  // 6400
-        "0e4c09fddcfec93abfa0107640e62286" -> 71.0  // 5041
-        "c3f75b8a2fef28ed755a6a7895ce6ce7" -> 61.0  // 3844
-        "36f9ea8bb7760f2298f6bf6c6247c49d" -> 53.0 // 2704
-        "0a349619f993ce97d90cbe6d7c8c5536" -> 40.1  // 1849
-        else -> data.sumOf { it.code } / 500.0
-    }
+    return serverValues[data] ?: data.sumOf { it.code } / 500.0
 }
 
 fun demonstrateCoffee() {
