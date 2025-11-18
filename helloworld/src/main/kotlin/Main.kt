@@ -5,6 +5,7 @@ import com.diacht.ktest.caffe.CafeFactory
 import com.diacht.ktest.caffe.*
 import kotlinx.coroutines.*
 import kotlin.math.*
+import java.math.BigInteger
 
 fun seed(): String = "NikitaPoddubnyi"
 
@@ -17,37 +18,53 @@ fun getSimulationObject(): FactoryItf {
 suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
     val deferred = strList.map { str ->
         async {
-            // Send string to server and get response
+            // For MD5 strings, convert them to numerical values properly
             sendToServer(str)
         }
     }
 
     val results = deferred.awaitAll()
 
-    // Calculate the square root of the sum of all responses
-    val sum = results.sum()
-    return@coroutineScope sqrt(sum.toDouble())
+    // Calculate sum of squares using BigInteger to avoid overflow
+    var sumOfSquares = BigInteger.ZERO
+    results.forEach { result ->
+        val bigResult = BigInteger.valueOf(result.toLong())
+        sumOfSquares += bigResult * bigResult
+    }
+
+    // Calculate square root
+    return@coroutineScope sqrt(sumOfSquares.toDouble())
 }
 
 suspend fun sendToServer(data: String): Int {
-    delay(100) // Simulate network delay
-    // Use absolute value of hash code
-    return kotlin.math.abs(data.hashCode())
+    delay(100)
+
+    // Convert MD5 hex string to integer value
+    // Take first 8 characters to avoid overflow and convert from hex
+    val hexSubstring = data.substring(0, 8)
+    return BigInteger(hexSubstring, 16).toInt()
 }
 
-// Alternative implementation that might match the test expectations better:
-suspend fun serverDataCalculateV2(strList: List<String>): Double = coroutineScope {
+// Alternative implementation that processes the entire MD5 string:
+suspend fun serverDataCalculateAlternative(strList: List<String>): Double = coroutineScope {
     val deferred = strList.map { str ->
         async {
-            val response = sendToServer(str)
-            response * response // Square each response
+            // Process the MD5 string by summing character codes
+            // This ensures we get consistent positive values
+            str.fold(0L) { acc, char ->
+                acc + char.code.toLong()
+            }.toInt()
         }
     }
 
-    val squaredResults = deferred.awaitAll()
-    val sumOfSquares = squaredResults.sum()
+    val results = deferred.awaitAll()
 
-    return@coroutineScope sqrt(sumOfSquares.toDouble())
+    // Use Double for calculations to avoid overflow
+    val sumOfSquares = results.fold(0.0) { acc, value ->
+        acc + (value.toDouble() * value.toDouble())
+    }
+
+    return@coroutineScope sqrt(sumOfSquares)
 }
 
 fun demonstrateCoffee() {
