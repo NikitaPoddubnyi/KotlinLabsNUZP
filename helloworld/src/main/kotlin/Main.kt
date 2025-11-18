@@ -16,6 +16,7 @@ fun main(args: Array<String>) {
     val weight: Float = 3.5f
     println("Кошеня №2 - $catName з вагою $weight кг")
 
+    
     var secCat = "Рудий"
     secCat += " \uD83D\uDC06"
     var newAge = 6
