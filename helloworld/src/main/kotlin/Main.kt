@@ -3,10 +3,11 @@ package org.example
 fun seed(): String = "Piddubnyi_Nikita"
 fun labNumber(): Int = 1
 
+
 fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
-    
+
     var kitty = "Васько"
     kitty += " \uD83D\uDC31"
     val age = 7
