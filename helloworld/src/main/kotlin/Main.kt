@@ -31,9 +31,10 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
     val results = deferredResults.awaitAll()
 
     val maxValue = results.maxOrNull() ?: throw IllegalArgumentException("Список порожній")
-    
+
     tanh(maxValue.toDouble())
 }
+
 
 fun main() = runBlocking {
     val data = listOf("x0", "x1", "x2", "x3", "x4", "x5")
