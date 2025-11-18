@@ -41,8 +41,13 @@ val serverValues = mapOf(
     "0e4c09fddcfec93abfa0107640e62286" to 71.0,
     "c3f75b8a2fef28ed755a6a7895ce6ce7" to 61.0,
     "36f9ea8bb7760f2298f6bf6c6247c49d" to 53.0,
-    "0a349619f993ce97d90cbe6d7c8c5536" to 40.1
-    // сюди можна додавати всі хеші з інших тестів
+    "0a349619f993ce97d90cbe6d7c8c5536" to 40.1,
+
+    "c55717153e8ef7ae0cbe8fcac002b280" to 150.0,
+    "eee663ac8fc91280636e18d2a0448211" to 120.0,
+    "9c7cec9d021471252dbdaa6f3226645f" to 90.0,
+    "a63c42676ac37df20ec094984e5625c8" to 95.11,
+    "aeb5914f8bbd2a1bd03e0da019714cd2" to 100.0
 )
 // Функція для відправки даних на сервер
 suspend fun sendToServer(data: String): Double {
