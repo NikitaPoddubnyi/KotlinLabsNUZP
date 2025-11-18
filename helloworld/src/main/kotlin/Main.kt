@@ -15,30 +15,36 @@ fun getSimulationObject(): FactoryItf {
 }
 
 suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
+    // Асинхронно відправляємо всі рядки на сервер
     val deferred = strList.map { str ->
         async {
+            // Використовуємо вбудовану функцію sendToServer
             sendToServer(str)
         }
     }
 
+    // Очікуємо результати від всіх корутин
     val results = deferred.awaitAll()
 
-    // Обчислюємо евклідову норму: sqrt(a² + b² + c² + ...)
-    val sumOfSquares = results.sumOf { it * it }.toDouble()
+    // Обчислюємо суму квадратів
+    var sumOfSquares = 0.0
+    results.forEach { result ->
+        sumOfSquares += result * result
+    }
+
+    // Повертаємо квадратний корінь з суми квадратів
     return@coroutineScope sqrt(sumOfSquares)
 }
 
+// Функція для відправки даних на сервер
 suspend fun sendToServer(data: String): Int {
+    // Імітуємо затримку мережі
     delay(100)
 
-    // Безпечна конвертація hex в Int
-    val hexValue = data.substring(0, 4)
-    return try {
-        hexValue.toInt(16)
-    } catch (e: NumberFormatException) {
-        // Якщо конвертація не вдалась, використовуємо суму кодів символів
-        data.sumOf { it.code } / 100
-    }
+    // Конвертуємо MD5 хеш в числове значення
+    // Беремо перші 8 символів та конвертуємо з hex в Int
+    val hexPart = data.substring(0, 8)
+    return hexPart.toInt(16)
 }
 
 fun demonstrateCoffee() {
