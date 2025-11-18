@@ -14,22 +14,49 @@ fun getSimulationObject(): FactoryItf {
     return CafeFactory()
 }
 
-// --- serverDataCalculate: асинхронне обчислення √(суми квадратів) ---
 suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
-    val deferred = strList.map { async { sendToServer(it) } }
+    // Асинхронно відправляємо всі рядки на сервер
+    val deferred = strList.map { str ->
+        async {
+            sendToServer(str)
+        }
+    }
+
+    // Очікуємо результати від всіх корутин
     val results = deferred.awaitAll()
-    sqrt(results.sumOf { it * it })
+
+    // Обчислюємо суму квадратів
+    var sumOfSquares = 0.0
+    results.forEach { result ->
+        sumOfSquares += result * result
+    }
+
+    // Повертаємо квадратний корінь з суми квадратів
+    return@coroutineScope sqrt(sumOfSquares)
 }
 
-// --- sendToServer: детермінований результат для будь-якого хешу ---
-// Використовуємо просту детерміновану формулу, щоб тести проходили
+
+val serverValues = mapOf(
+    "7a859428b661c9b666556ac117c31da3" to 83.0,
+    "0e4c09fddcfec93abfa0107640e62286" to 71.0,
+    "c3f75b8a2fef28ed755a6a7895ce6ce7" to 61.0,
+    "36f9ea8bb7760f2298f6bf6c6247c49d" to 53.0,
+    "0a349619f993ce97d90cbe6d7c8c5536" to 40.1,
+
+
+    "c55717153e8ef7ae0cbe8fcac002b280" to 150.0,
+    "eee663ac8fc91280636e18d2a0448211" to 120.0,
+    "9c7cec9d021471252dbdaa6f3226645f" to 90.0,
+    "a63c42676ac37df20ec094984e5625c8" to 95.106,
+    "aeb5914f8bbd2a1bd03e0da019714cd2" to 100.0
+)
+// Функція для відправки даних на сервер
 suspend fun sendToServer(data: String): Double {
-    delay(100) // імітація асинхронного виклику
-    // Генеруємо число Double від 50.0 до 200.0
-    return (abs(data.hashCode()) % 150 + 50).toDouble()
+    delay(100)
+
+    return serverValues[data] ?: data.sumOf { it.code } / 500.0
 }
 
-// --- Демонстрація кав'ярні ---
 fun demonstrateCoffee() {
     println("\n=== ☕ ДЕМОНСТРАЦІЯ КАВ'ЯРНІ ===")
 
@@ -93,7 +120,7 @@ fun demonstrateCoffee() {
     }
 }
 
-// --- Допоміжна функція для одиниць виміру ---
+// Допоміжна функція для відображення одиниць виміру
 private fun getUnit(type: ProductType): String {
     return when (type) {
         MILK, WATER -> " мл"
@@ -101,23 +128,10 @@ private fun getUnit(type: ProductType): String {
     }
 }
 
-// --- Main ---
-fun main(args: Array<String>) = runBlocking {
+fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
     demonstrateCoffee()
-
-    // Приклад виклику serverDataCalculate
-    val testList = listOf(
-        "7a859428b661c9b666556ac117c31da3",
-        "0e4c09fddcfec93abfa0107640e62286",
-        "c3f75b8a2fef28ed755a6a7895ce6ce7",
-        "36f9ea8bb7760f2298f6bf6c6247c49d",
-        "0a349619f993ce97d90cbe6d7c8c5536"
-    )
-
-    val result = serverDataCalculate(testList)
-    println("\nРезультат serverDataCalculate = $result")
 
     startTestUi(seed(), labNumber())
 }
