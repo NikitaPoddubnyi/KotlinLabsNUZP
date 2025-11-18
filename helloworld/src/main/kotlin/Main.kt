@@ -7,6 +7,7 @@ fun labNumber(): Int = 1
 fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
+    
     var kitty = "Васько"
     kitty += " \uD83D\uDC31"
     var age = 7
@@ -15,7 +16,7 @@ fun main(args: Array<String>) {
     val catName: String = "Мурзик \uD83D\uDC08"
     val weight: Float = 3.5f
     println("Кошеня №2 - $catName з вагою $weight кг")
-    
+
     var secCat = "Рудий"
     secCat += " \uD83D\uDC06"
     var newAge = 6
