@@ -17,47 +17,28 @@ fun getSimulationObject(): FactoryItf {
 suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
     val deferred = strList.map { str ->
         async {
-            // The server returns a small integer value for each MD5 string
-            // Let's try converting the MD5 to a stable small number
             sendToServer(str)
         }
     }
 
     val results = deferred.awaitAll()
 
-    // Calculate the Euclidean norm: sqrt(a² + b² + c² + ...)
-    var sumOfSquares = 0.0
-    results.forEach { result ->
-        sumOfSquares += result * result
-    }
-
+    // Обчислюємо евклідову норму: sqrt(a² + b² + c² + ...)
+    val sumOfSquares = results.sumOf { it * it }.toDouble()
     return@coroutineScope sqrt(sumOfSquares)
 }
 
 suspend fun sendToServer(data: String): Int {
     delay(100)
 
-    // MD5 strings are 32-character hexadecimal
-    // Let's convert them to smaller numbers by taking a portion
-    // Try using just the first 4 characters as a hex number
+    // Безпечна конвертація hex в Int
     val hexValue = data.substring(0, 4)
-    return hexValue.toInt(16)
-}
-
-// Alternative: Maybe we need to process pairs of characters
-suspend fun serverDataCalculateAlternative(strList: List<String>): Double = coroutineScope {
-    val deferred = strList.map { str ->
-        async {
-            // Process the MD5 string by taking the average of character codes
-            val avg = str.map { it.code }.average().toInt()
-            avg
-        }
+    return try {
+        hexValue.toInt(16)
+    } catch (e: NumberFormatException) {
+        // Якщо конвертація не вдалась, використовуємо суму кодів символів
+        data.sumOf { it.code } / 100
     }
-
-    val results = deferred.awaitAll()
-
-    val sumOfSquares = results.sumOf { it * it }.toDouble()
-    return@coroutineScope sqrt(sumOfSquares)
 }
 
 fun demonstrateCoffee() {
@@ -123,7 +104,7 @@ fun demonstrateCoffee() {
     }
 }
 
-// Helper function to get appropriate units
+// Допоміжна функція для відображення одиниць виміру
 private fun getUnit(type: ProductType): String {
     return when (type) {
         MILK, WATER -> " мл"
