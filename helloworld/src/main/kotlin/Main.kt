@@ -15,10 +15,11 @@ fun getSimulationObject(): FactoryItf {
 }
 
 suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
-    // Асинхронно відправляємо всі рядки на сервер
+    // Асинхронно обробляємо всі рядки
     val deferred = strList.map { str ->
         async {
-            sendToServer(str)
+            // Імітуємо відправку на сервер - конвертуємо MD5 в числове значення
+            simulateSendToServer(str)
         }
     }
 
@@ -35,25 +36,21 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
     return@coroutineScope sqrt(sumOfSquares)
 }
 
+// Функція для імітації відправки на сервер
+suspend fun simulateSendToServer(data: String): Int {
+    delay(100) // Імітуємо затримку мережі
 
-val serverValues = mapOf(
-    "7a859428b661c9b666556ac117c31da3" to 83.0,
-    "0e4c09fddcfec93abfa0107640e62286" to 71.0,
-    "c3f75b8a2fef28ed755a6a7895ce6ce7" to 61.0,
-    "36f9ea8bb7760f2298f6bf6c6247c49d" to 53.0,
-    "0a349619f993ce97d90cbe6d7c8c5536" to 40.1,
-
-    "c55717153e8ef7ae0cbe8fcac002b280" to 150.0,
-    "eee663ac8fc91280636e18d2a0448211" to 120.0,
-    "9c7cec9d021471252dbdaa6f3226645f" to 90.0,
-    "a63c42676ac37df20ec094984e5625c8" to 95.106,
-    "aeb5914f8bbd2a1bd03e0da019714cd2" to 100.0
-)
-// Функція для відправки даних на сервер
-suspend fun sendToServer(data: String): Double {
-    delay(100)
-
-    return serverValues[data] ?: data.sumOf { it.code } / 500.0
+    // Конвертуємо MD5 хеш в числове значення
+    // Беремо перші 8 символів та конвертуємо з hex в Int
+    val hexPart = data.substring(0, 8)
+    return try {
+        // Використовуємо Long для уникнення переповнення, потім конвертуємо в Int
+        val longValue = hexPart.toLong(16)
+        (longValue % Int.MAX_VALUE).toInt()
+    } catch (e: Exception) {
+        // Якщо конвертація не вдалась, використовуємо хеш-код
+        kotlin.math.abs(data.hashCode()) % 1000
+    }
 }
 
 fun demonstrateCoffee() {
