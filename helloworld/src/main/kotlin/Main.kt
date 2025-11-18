@@ -3,6 +3,8 @@ import org.example.helloworld.BuildConfig
 import com.diacht.ktest.compose.startTestUi
 import com.diacht.ktest.caffe.CafeFactory
 import com.diacht.ktest.caffe.*
+import kotlinx.coroutines.*
+import kotlin.math.sqrt
 
 fun seed(): String = "NikitaPoddubnyi"
 
@@ -11,6 +13,28 @@ fun labNumber(): Int = BuildConfig.LAB_NUMBER
 fun getSimulationObject(): FactoryItf {
     return CafeFactory()
 }
+
+
+suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
+
+    suspend fun sendToServer(value: String): Int {
+        delay(100)
+        return value.toInt()
+    }
+
+    val deferredValues = strList.map { str ->
+        async {
+            sendToServer(str)
+        }
+    }
+
+    val numbers = deferredValues.awaitAll()
+    
+    val sumSquares = numbers.sumOf { it * it }
+
+    sqrt(sumSquares.toDouble())
+}
+
 
 fun demonstrateCoffee() {
     println("\n=== ☕ ДЕМОНСТРАЦІЯ КАВ'ЯРНІ ===")
@@ -53,7 +77,6 @@ fun demonstrateCoffee() {
     result.groupBy { it.type }.forEach { (type, list) ->
         println("- $type: ${list.size} шт.")
     }
-
 
     println("\n📊 Статистика:")
     println("- Загальний дохід: ${factory.getEarnings()} грн")
