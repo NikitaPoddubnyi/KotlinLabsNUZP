@@ -22,7 +22,7 @@ kotlin {
     jvmToolchain(17)
 }
 
-// Explicit JVM target configuration
+// FIX JVM TARGET COMPATIBILITY
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "17"
 }

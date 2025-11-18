@@ -1,5 +1,3 @@
-package org.example
-
 fun seed(): String = "Piddubnyi_Nikita"
 fun labNumber(): Int = 1
 
