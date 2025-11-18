@@ -1,17 +1,12 @@
 package org.example
 
-import KTests.caffe.BuildConfig
+fun seed(): String = "NikitaPoddubnyi"
 
-
-fun seed(): String = "Nikita_Piddubniy"
-
-
-fun labNumber() : Int = 1
+fun labNumber(): Int = 1
 
 fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
-    
     var kitty = "Васько"
     kitty += " \uD83D\uDC31"
     var age = 7
@@ -25,6 +20,5 @@ fun main(args: Array<String>) {
     secCat += " \uD83D\uDC06"
     var newAge = 6
     val newWeight = 8.2f
-    println("Кошеня №3 - $secCat з вагою $newWeight кг та віком $newAge років")
+    println("Кошеня №3 - $secCat віком $newAge років та вагою $newWeight кг")
 }
-
