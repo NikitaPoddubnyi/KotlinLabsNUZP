@@ -1,25 +1,43 @@
+import com.diacht.ktest.compose.startTestUi
+import org.example.helloworld.BuildConfig
+import kotlin.math.*
+import kotlinx.coroutines.*
+import java.net.URL
+
 fun seed(): String = "Piddubnyi_Nikita"
-fun labNumber(): Int = 1
 
+fun labNumber(): Int = BuildConfig.LAB_NUMBER
 
-fun main(args: Array<String>) {
-    println("Лабораторна робота №${labNumber()} користувача ${seed()}")
-
-    var kitty = "Васько"
-    kitty += " \uD83D\uDC31"
-    val age = 7
-    println("Кошеня №1 - $kitty віком $age років")
-
-    val catName: String = "Мурзик \uD83D\uDC08"
-    val weight: Float = 3.5f
-    println("Кошеня №2 - $catName з вагою $weight кг")
-
-
-
-    
-    val catName2: String = "Рудий \uD83D\uDC06"
-    val weight2: Float = 8.2f
-    val age2 = 6
-    println("Кошеня №3 - $catName2 віком $age2 та вагою $weight2 кг")
+suspend fun getNumberFromServer(message: String): Int {
+    return withContext(Dispatchers.IO) {
+        val url = URL("http://diacht.2vsoft.com/api/send-number?message=$message")
+        val connection = url.openConnection()
+        connection.connect()
+        val input = connection.getInputStream()
+        val buffer = ByteArray(128)
+        val bytesRead = input.read(buffer)
+        input.close()
+        String(buffer, 0, bytesRead).toInt()
+    }
 }
 
+suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
+    val firstSix = strList.take(6)
+
+    val deferredResults = firstSix.map { str ->
+        async { getNumberFromServer(str) }
+    }
+
+    val results = deferredResults.awaitAll()
+
+    val maxValue = results.maxOrNull() ?: throw IllegalArgumentException("Список порожній")
+    
+    tanh(maxValue.toDouble())
+}
+
+fun main() = runBlocking {
+    val data = listOf("x0", "x1", "x2", "x3", "x4", "x5")
+    val result = serverDataCalculate(data)
+    println(result)
+    startTestUi(seed(), labNumber())
+}

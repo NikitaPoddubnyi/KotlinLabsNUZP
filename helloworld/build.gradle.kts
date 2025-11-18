@@ -1,5 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version Versions.kotlin
+    id("org.jetbrains.compose") version Versions.compose
     application
 }
 
@@ -8,9 +9,14 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven("file://${rootDir}/.m2repo/")
 }
 
 dependencies {
+    implementation(Versions.library)
+    implementation(compose.desktop.currentOs)
+    implementation(project(":caffe"))
     testImplementation(kotlin("test"))
 }
 
@@ -19,19 +25,5 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(17)
-}
-
-// FIX JVM TARGET COMPATIBILITY
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "17"
-}
-
-tasks.withType<JavaCompile>().configureEach {
-    targetCompatibility = "17"
-    sourceCompatibility = "17"
-}
-
-application {
-    mainClass.set("MainKt")
+    jvmToolchain(Versions.jvmLevel)
 }
